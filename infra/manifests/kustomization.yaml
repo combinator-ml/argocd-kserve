@@ -1,0 +1,21 @@
+# Version numbers come from https://github.com/kserve/kserve/blob/master/hack/quick_install.sh
+# Except for istio which was the most recent
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+bases:
+  # ISTIO
+  - https://raw.githubusercontent.com/istio/istio/1.11.2/manifests/charts/base/crds/crd-all.gen.yaml
+  - https://raw.githubusercontent.com/istio/istio/1.11.2/manifests/charts/istio-operator/crds/crd-operator.yaml
+  - https://raw.githubusercontent.com/istio/istio/1.11.2/manifests/charts/istio-operator/files/gen-operator.yaml
+  # CERT MANAGER
+  - https://github.com/jetstack/cert-manager/releases/download/v1.3.0/cert-manager.yaml
+  # KNATIVE
+  # - https://github.com/knative/serving/releases/download/knative-v1.0.0/serving-crds.yaml # Says required, but clashes with kustomize
+  - https://github.com/knative/serving/releases/download/knative-v1.0.0/serving-core.yaml
+  # - https://github.com/knative/net-istio/releases/download/knative-v1.0.0/release.yaml # Doesn't work because of invalid/bad yaml parsing see knative-release-fixed.yaml
+  # KSERVE
+  - https://raw.githubusercontent.com/kserve/kserve/master/install/v0.7.0/kserve.yaml
+resources:
+  - istio-namespace.yaml
+  - istio-operator.yaml
+  - knative-release-fixed.yaml
